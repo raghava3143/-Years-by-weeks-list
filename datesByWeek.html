@@ -1,0 +1,331 @@
+<!--
+Author : Raghavendra Basavaraju
+Email: basavarajuraghavendra@gmail.com
+Concept : Get dates by weeks 
+-->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+label{
+	color: white;
+	font-size: large;
+}
+h3{
+	color:white;
+}
+td{
+	color: yellow;
+}
+
+th{
+
+    background-color: blue;
+    color: white;
+
+}
+
+</style>
+<body style="background-image: url(https://images.designtrends.com/wp-content/uploads/2015/11/30145335/Dark-Blue-HD-Plan-Background1.jpg)">
+
+	<div class="container-fluid">
+
+
+		<div class="row">
+			<div class="col-md-12">
+
+				<h3 align="center">Display Calender By Week  (Raghavendra)</h3>
+
+			</div>
+
+			<div class="col-md-6">
+				<label>Year</label>&nbsp;&nbsp;&nbsp;
+				<select name="selYear" onchange="resetDrop()" id="selYear" class="btn btn-success dropdown-toggle">
+
+					<option value="0">Select</option>
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+					<option value="2026">2026</option>
+				</select>&nbsp;&nbsp;&nbsp;
+
+				<label>Weeks</label>&nbsp;&nbsp;&nbsp;
+				<select name="selWeeks" id="selWeeks" onchange="weekChange()" class="btn btn-success dropdown-toggle">
+
+					<option value="0">Select</option>
+
+				</select>&nbsp;&nbsp;&nbsp;
+
+			</div>
+			<hr>
+			<br><br/><br><br/>
+			<div class="col-md-12">
+
+
+
+<table class="table table-bordered" id="datesRow">
+
+	<th>Project</th><th>Category</th><th>Task Title</th><th>Billing</th>
+	<th>mm/dd/yy</th>
+	<th>mm/dd/yy</th>
+	<th>mm/dd/yy</th>
+	<th>mm/dd/yy</th>
+	<th>mm/dd/yy</th>
+	<th>mm/dd/yy</th>
+	<th>mm/dd/yy</th>
+
+<tr id="datesRow222" style="color: whitesmoke">
+		
+		<td id=""><select class="form-control" disabled>
+		<option>Project Select</option>
+		</select></td>
+		<td id=""><select class="form-control" disabled>
+		<option>Report Select</option>
+		</select></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="radio" name="billing" disabled>  Yes
+<input type="radio" name="billing" disabled>  No
+		</td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+		<td id=""><input type="text" class="form-control" disabled></td>
+	</tr>
+	
+</table>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</body>
+<script>
+	var rangeMain = new Array();
+	var day_name=new Array(7);
+
+	day_name[0]='Sun';
+	day_name[1]='Mon';
+	day_name[2]='Tues';
+	day_name[3]='Wed';
+	day_name[4]='Thurs';
+	day_name[5]='Fri';
+	day_name[6]='Sat';
+
+
+
+
+// Returns the ISO week of the date.
+
+Date.prototype.getWeek = function(y) {
+	var date = new Date(''+y+'');
+
+	date.setHours(0, 0, 0, 0);
+  // Thursday in current week decides the year.
+
+  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+  // January 4 is always in week 1.
+  
+  var week1 = new Date(''+y+'', 0, 4);
+  
+  // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+  return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
+
+function getDayOfWeek(date) {
+	var dayOfWeek = new Date(date).getDay();    
+	return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+}
+
+
+
+function getDateRangeOfWeek(weekNo, y){
+
+	var d1, numOfdaysPastSinceLastMonday, rangeIsFrom, rangeIsTo;
+	d1 = new Date(''+y+'');
+
+	numOfdaysPastSinceLastMonday = d1.getDay() - 1;
+
+
+	d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+	d1.setDate(d1.getDate() + (7 * (weekNo - d1.getWeek(y))));
+
+
+	for(var wk=0;wk<=6;wk++)
+	{
+		console.log(d1.getFullYear());
+		rangeIsFrom =   (d1.getMonth() + 1)+"/" +d1.getDate() + "/" + d1.getFullYear();
+		d1.setDate(d1.getDate() + 1);
+	
+	var my_day = new Date(rangeIsFrom);
+
+	var daYGet = day_name[my_day.getDay()];
+	
+	rangeMain[daYGet] = rangeIsFrom;
+}
+
+return rangeMain;
+
+};
+
+
+
+function weekChange()
+{
+	//rangeMain = [];
+	var year = document.getElementById('selYear').value;
+
+	var week = document.getElementById('selWeeks').value;
+
+//console.log(getDateRangeOfWeek(week, year)); //12-21-2015 to 12-27-2015
+var target = getDateRangeOfWeek(week, year);
+console.log(target);
+var HTML = '';
+console.log(k);
+//HTML+= `<tr>`;
+HTML = `
+<th>Project</th><th>Category</th><th>Task Title</th><th>Billing</th>
+`;
+
+for (var k in target){
+	//HTML+= `<tr align="center">`;
+	if (target.hasOwnProperty(k)) {
+		if(target[k]!=undefined || target[k]!=null)
+		{
+
+			HTML+= `<th id=`+k+target[k]+`>`+k+`<br><input class="form-control" disabled type="text"
+			value="`+target[k]+`"></th>`;
+    		//alert(HTML);
+
+    	}
+
+    }
+    
+
+}
+
+HTML+=`<tr id="datesRow222" style="color: whitesmoke">
+		
+		<td id=""><select class="form-control">
+		<option>Project Select</option>
+		</select></td>
+		<td id=""><select class="form-control">
+		<option>Report Select</option>
+		</select></td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="radio" name="billing">  Yes
+<input type="radio" name="billing">  No
+		</td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="text" class="form-control"></td>
+		<td id=""><input type="text" class="form-control"></td>
+	</tr>
+	`;
+    		
+document.getElementById('datesRow').innerHTML=HTML;
+
+
+
+
+}
+
+function resetDrop()
+{
+	rangeMain = [];
+document.getElementById("selWeeks").innerHTML = "";
+
+var selD11 = document.getElementById('selWeeks');
+	var option1 = document.createElement("OPTION");
+	
+		option1.innerHTML = 'Select';
+		option1.value = 0;
+		selD11.options.add(option1);
+
+
+
+	document.getElementById('selWeeks').selectedIndex = 0; 	
+
+	var yearnum = document.getElementById('selYear').value;
+	
+	if(yearnum == undefined || yearnum == 0)
+	{
+
+		document.createElement("selWeeks").innerHTML = '<option>Select</option>' ;
+		return TRUE;
+	}
+	var weeksData = getISOWeeks(yearnum);
+
+	for(var week=1;week<=weeksData;week++)
+	{
+		
+		var selD1 = document.getElementById('selWeeks');
+	var option = document.createElement("OPTION");
+	var datesData = getDateRangeOfWeekRangeInWeeks(week, yearnum);
+		option.innerHTML = week+' ( '+datesData+' )';
+		option.value = week;
+		selD1.options.add(option);
+	}
+
+
+	
+}
+
+
+
+function getDateRangeOfWeekRangeInWeeks(weekNo, y){
+
+	var d1, numOfdaysPastSinceLastMonday, rangeIsFrom, rangeIsTo;
+	d1 = new Date(''+y+'');
+
+	numOfdaysPastSinceLastMonday = d1.getDay() - 1;
+
+
+	d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+	d1.setDate(d1.getDate() + (7 * (weekNo - d1.getWeek(y))));
+
+
+	
+		console.log(d1.getFullYear());
+		rangeIsFromDate = (d1.getMonth() + 1)+"/" +d1.getDate() + "/" + d1.getFullYear(); /* d1.getFullYear() +"-" + (d1.getMonth() + 1) + "-" + d1.getDate();*/
+		d1.setDate(d1.getDate() + 6);
+		rangeIsToDate = (d1.getMonth() + 1)+"/" +d1.getDate() + "/" + d1.getFullYear();  /*d1.getFullYear() +"-" + (d1.getMonth() + 1) + "-" + d1.getDate()*/;
+	return rangeIsFromDate+ ' TO '+rangeIsToDate;
+
+};
+
+
+
+
+// get no of weeks for year
+function getISOWeeks(y) {
+	var d,
+	isLeap;
+
+	d = new Date(y, 0, 1);
+	isLeap = new Date(y, 1, 29).getMonth() === 1;
+
+    //check for a Jan 1 that's a Thursday or a leap year that has a 
+    //Wednesday jan 1. Otherwise it's 52
+    return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52
+}
+
+
+
+</script>
